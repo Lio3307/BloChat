@@ -1,8 +1,10 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 export const Login = () => {
-  const [emailAddress, setEmailAddress] = useState();
-  const [password, setPassword] = useState();
+  const [emailAddress, setEmailAddress] = useState("");
+  const [password, setPassword] = useState("");
+  const [isShowPass, setIsShowPass] = useState(false)
 
   return (
     <>
@@ -35,7 +37,7 @@ export const Login = () => {
                 Password
               </label>
               <input
-                type="password"
+                type={isShowPass ? "text" : "password"}
                 className="form-control"
                 id="password"
                 value={password}
@@ -48,11 +50,13 @@ export const Login = () => {
                 type="checkbox"
                 className="form-check-input"
                 id="rememberMe"
+                onChange={() => {
+                  setIsShowPass(showPass => !showPass)
+                }}
               />
-              <label className="form-check-label" htmlFor="rememberMe">
-                Remember me
-              </label>
+              Show Password
             </div>
+              <p>Dont have account? <Link to="/register">Sign Up Here!</Link> </p>
 
             <button type="submit" className="btn btn-primary w-100">
               Login
