@@ -9,12 +9,18 @@ export const Profile = () => {
 
   const navigate = useNavigate();
 
-  //   const handleLogout = (e) => {
-  //     e.preventDefault();
-
-  //     alert("Log Out Success!!");
-  //     navigate("/");
-  //   };
+    const handleLogout = async (e) => {
+      e.preventDefault();
+      try {
+        await auth.signOut()
+        alert("You have been log out...")
+        navigate("/")
+      } catch (error) {
+        console.error(error)
+      }
+    //   alert("Log Out Success!!");
+    //   navigate("/");
+    };
 
   //With Non Unscubscribe
   //   useEffect(() => {
@@ -88,9 +94,10 @@ export const Profile = () => {
               <strong>Email:</strong>
               <p className="form-control-plaintext">{userDetail.email}</p>
             </div>
+            <button onClick={handleLogout} className="btn btn-danger">LogOut</button>
           </div>
         </div>
-      ) : (
+      ) : (ding 
         <div className="text-center text-danger mt-5">
           <h5>You are not Logged In!</h5>
         </div>
