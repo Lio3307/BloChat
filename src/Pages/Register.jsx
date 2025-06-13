@@ -9,41 +9,41 @@ export const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+
   const [isShowPass, setIsShowPass] = useState(false);
   const navigate = useNavigate()
 
-  const isRegisterSucces = (e) => {
-    e.preventDefault()
-    alert("Register Success!!")
-    navigate("/")
-  }
-
+  
+  
   const handleRegister = async (e) => {
     e.preventDefault();
     const trimmedName = name.trim();
     const trimmedEmail = email.trim();
     const trimmedPassword = password.trim();
-
+    
     if (trimmedName === "" || trimmedEmail === "" || trimmedPassword === "") {
       alert("Input fields cannot be empty or only spaces!");
       return;
     }
-    if(password.lengt < 6) {
+    if(password.length < 6) {
       alert("Create password at least 6 length!!")
       return;
     }
+    alert("Registering...")
     try {
       await createUserWithEmailAndPassword(auth, email, password);
       const user = auth.currentUser;
       if(user) {
         await setDoc(doc(db, "Users", user.uid), {
-            email: user.email,
-            fullName: name
+          email: user.email,
+          fullName: name
         })
       }
+      alert("Register Success!!")
+      navigate("/")
     } catch (error) {
       console.error(error)
-    }
+    } 
   };
 
   return (
@@ -111,13 +111,14 @@ export const Register = () => {
                   Show Password
                 </label>
 
+
                 <p className="my-2">
                   Already have account? <Link to="/">Login Here!!</Link>{" "}
                 </p>
               </div>
             </div>
 
-            <button onClick={isRegisterSucces} className="btn btn-success w-100">
+            <button type="submit" className="btn btn-success w-100">
               Register
             </button>
           </form>
