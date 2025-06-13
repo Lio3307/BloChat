@@ -14,7 +14,7 @@ export const Profile = () => {
       try {
         await auth.signOut()
         alert("You have been log out...")
-        navigate("/")
+        navigate("/login")
       } catch (error) {
         console.error(error)
       }
@@ -97,7 +97,7 @@ export const Profile = () => {
             <button onClick={handleLogout} className="btn btn-danger">LogOut</button>
           </div>
         </div>
-      ) : (ding 
+      ) : (
         <div className="text-center text-danger mt-5">
           <h5>You are not Logged In!</h5>
         </div>
