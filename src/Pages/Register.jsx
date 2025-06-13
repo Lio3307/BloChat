@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
-
-
+import { Link, useNavigate } from "react-router-dom";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth, db } from "../firebase/config";
+import { setDoc, doc } from "firebase/firestore";
 
 export const Register = () => {
   const [name, setName] = useState("");
@@ -9,6 +10,41 @@ export const Register = () => {
   const [password, setPassword] = useState("");
 
   const [isShowPass, setIsShowPass] = useState(false);
+  const navigate = useNavigate()
+
+  const isRegisterSucces = (e) => {
+    e.preventDefault()
+    alert("Register Success!!")
+    navigate("/")
+  }
+
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    const trimmedName = name.trim();
+    const trimmedEmail = email.trim();
+    const trimmedPassword = password.trim();
+
+    if (trimmedName === "" || trimmedEmail === "" || trimmedPassword === "") {
+      alert("Input fields cannot be empty or only spaces!");
+      return;
+    }
+    if(password.lengt < 6) {
+      alert("Create password at least 6 length!!")
+      return;
+    }
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+      const user = auth.currentUser;
+      if(user) {
+        await setDoc(doc(db, "Users", user.uid), {
+            email: user.email,
+            fullName: name
+        })
+      }
+    } catch (error) {
+      console.error(error)
+    }
+  };
 
   return (
     <>
@@ -18,8 +54,7 @@ export const Register = () => {
           style={{ maxWidth: "400px", width: "100%" }}
         >
           <h3 className="text-center mb-4">Register</h3>
-          <form>
-            {/* Name */}
+          <form onSubmit={handleRegister}>
             <div className="mb-3">
               <label htmlFor="name" className="form-label">
                 Full Name
@@ -70,17 +105,19 @@ export const Register = () => {
                   type="checkbox"
                   id="checkboxPass"
                   className="form-check-input"
-                  onChange={() => setIsShowPass(showPass => !showPass)}
+                  onChange={() => setIsShowPass((showPass) => !showPass)}
                 />
                 <label htmlFor="checkboxPass" className="form-check-label">
                   Show Password
                 </label>
 
-                <p>Already have account? <Link to="/">Login Here!!</Link> </p>
+                <p className="my-2">
+                  Already have account? <Link to="/">Login Here!!</Link>{" "}
+                </p>
               </div>
             </div>
 
-            <button type="submit" className="btn btn-success w-100">
+            <button onClick={isRegisterSucces} className="btn btn-success w-100">
               Register
             </button>
           </form>

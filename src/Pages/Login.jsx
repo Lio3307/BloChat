@@ -1,10 +1,35 @@
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { auth } from "../firebase/config";
 
 export const Login = () => {
   const [emailAddress, setEmailAddress] = useState("");
   const [password, setPassword] = useState("");
   const [isShowPass, setIsShowPass] = useState(false)
+  const navigate = useNavigate()
+
+  const handleLogin = async (e) => {
+    e.preventDefault()
+
+    if(emailAddress.trim() === "" || password.trim() === ""){
+      alert("Input Field cannot be empty")
+      return;
+    }
+
+    if(password.length < 6) {
+      alert("Password at least more than 6 character!!")
+      return
+    }
+
+    try {
+      await signInWithEmailAndPassword(auth, emailAddress, password)
+      alert("Login Successfully!")
+      navigate("/profile")
+    } catch (err) {
+      console.error(err)
+    }
+  }
 
   return (
     <>
@@ -14,7 +39,7 @@ export const Login = () => {
           style={{ maxWidth: "400px", width: "100%" }}
         >
           <h3 className="text-center mb-4">Login</h3>
-          <form>
+          <form onSubmit={handleLogin}>
             <div className="mb-3">
               <label htmlFor="email" className="form-label">
                 Email address
