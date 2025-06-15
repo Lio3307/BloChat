@@ -19,8 +19,6 @@ export const Profile = () => {
       } catch (error) {
         console.error(error)
       }
-    //   alert("Log Out Success!!");
-    //   navigate("/");
     };
 
   //With Non Unscubscribe
@@ -101,7 +99,6 @@ export const Profile = () => {
       ) : (
         <div className="text-center text-danger mt-5">
           <h5>You are not Logged In!</h5>
-          <button className="btn btn-primary" onClick={handleLogout}>LogOut</button>
         </div>
       )}
     </>
