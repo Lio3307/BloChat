@@ -20,15 +20,13 @@ export const Login = () => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        console.log("User logged in:", user);
-        // bisa set state: setCurrentUser(user)
+        navigate("/profile");
       } else {
         console.log("User not logged in");
-        // setCurrentUser(null)
       }
     });
 
-    return () => unsubscribe(); // cleanup
+    return () => unsubscribe();
   }, []);
 
   const handleLoginWithGoogle = async (e) => {
@@ -42,7 +40,7 @@ export const Login = () => {
       if (!userSnap.exists()) {
         await setDoc(useRef, {
           email: userDetail.email,
-          fullName: userDetail.fullName || userDetail.displayName,
+          fullName: userDetail.displayName,
         });
       }
     } catch (err) {
