@@ -17,7 +17,7 @@ export const Register = () => {
   
   const handleRegister = async (e) => {
     e.preventDefault();
-    signUpEmail(db, auth, email, password)
+    signUpEmail(db, fullName, auth, email, password)
   };
 
   return (

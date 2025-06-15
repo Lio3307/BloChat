@@ -5,7 +5,7 @@ import {
   signInWithPopup,
 } from "firebase/auth";
 import { setDoc, doc, getDoc } from "firebase/firestore";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 const AuthProvider = createContext();
 
@@ -18,7 +18,7 @@ export const AuthContext = ({ children }) => {
 
   const [userDetail, setUserDetail] = useState(null);
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   function subscribe(auth, db, setLoading) {
     const result = auth.onAuthStateChanged(async (user) => {
@@ -42,7 +42,7 @@ export const AuthContext = ({ children }) => {
     return result;
   }
 
-  async function signUpEmail(db, auth, email, password) {
+  async function signUpEmail(db, fullName, auth, email, password) {
     if (
       email.trim() === "" ||
       password.trim() === "" ||
@@ -56,20 +56,13 @@ export const AuthContext = ({ children }) => {
       return;
     }
     try {
-      const result = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
+      await createUserWithEmailAndPassword(auth, email, password);
       const currentUser = auth.currentUser;
       if (currentUser) {
         await setDoc(doc(db, "Users", currentUser.uid), {
           email: currentUser.email,
           fullName: fullName,
         });
-      }
-      if (result?.user) {
-        navigate("/home");
       }
       alert("Register successfully");
     } catch (err) {
@@ -79,7 +72,7 @@ export const AuthContext = ({ children }) => {
 
   async function signInEmail(auth, email, password) {
     if (email.trim() === "" || password.trim() === "") {
-      alert("input field canno be empty or space!!");
+      alert("input field cannot be empty or space!!");
       return;
     }
     if (password.length < 6) {
@@ -89,7 +82,39 @@ export const AuthContext = ({ children }) => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
     } catch (err) {
-      console.error(err);
+      switch (err.code) {
+      case "auth/user-not-found":
+        alert("Email tidak terdaftar! Silakan daftar terlebih dahulu.");
+        break;
+        
+      case "auth/wrong-password":
+        alert("Password yang Anda masukkan salah!");
+        break;
+        
+      case "auth/invalid-credential":
+        alert("Email atau password yang Anda masukkan salah!");
+        break;
+        
+      case "auth/invalid-email":
+        alert("Format email tidak valid!");
+        break;
+        
+      case "auth/user-disabled":
+        alert("Akun Anda telah dinonaktifkan!");
+        break;
+        
+      case "auth/too-many-requests":
+        alert("Terlalu banyak percobaan login. Silakan coba lagi nanti.");
+        break;
+        
+      case "auth/network-request-failed":
+        alert("Gagal terhubung ke server. Periksa koneksi internet Anda.");
+        break;
+        
+      default:
+        alert("Terjadi kesalahan saat login: " + err.message);
+        break;
+    }
     }
   }
 

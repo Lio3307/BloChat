@@ -5,6 +5,7 @@ import { Register } from "./Pages/Register";
 import { Profile } from "./components/Profile";
 import { auth } from "./firebase/config";
 import { NavBar } from "./components/NavBar";
+import { Home } from "./Pages/Home";
 
 function App() {
 
@@ -24,8 +25,9 @@ function App() {
       <Routes>
         <Route path="/" element={rememberUser ? <Navigate to={"/profile"}/> : <Login />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        <Route path="/register" element={rememberUser ? <Navigate to={"/home"}/> : <Register />} />
         <Route path="/profile" element={<Profile/>}/>
+        <Route path="/home" element={<Home />}/>
       </Routes>
     </>
   );
