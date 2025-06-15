@@ -1,15 +1,13 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { auth, db } from "../firebase/config";
 import { useNavigate } from "react-router-dom";
 import { signOut } from "firebase/auth";
 import { useAuthContext } from "../contexts/AuthContext";
 
 export const Profile = () => {
-  const [loading, setLoading] = useState(true);
-
   const navigate = useNavigate();
 
-  const { userDetail, subscribe } = useAuthContext();
+  const { userDetail, subscribe, loading, setLoading } = useAuthContext();
 
   const handleLogout = async (e) => {
     e.preventDefault();
@@ -47,15 +45,9 @@ export const Profile = () => {
   //   }, []);
 
   useEffect(() => {
-    let unsubs;
-    try {
-      const unsubscribe = subscribe(auth, db, setLoading);
-      unsubs = unsubscribe;
-    } catch (err) {
-      console.error(err);
-    }
+    const unsubscribe = subscribe(auth, db, setLoading);
 
-    return () => unsubs && unsubs();
+    return () => unsubscribe();
   }, []);
 
   return (
@@ -66,7 +58,7 @@ export const Profile = () => {
             <span className="visually-hidden">Loading...</span>
           </div>
         </div>
-      ) : userDetail ? (
+      ) : (
         <div className="container d-flex justify-content-center mt-5">
           <div
             className="card shadow-lg p-4"
@@ -86,8 +78,7 @@ export const Profile = () => {
             </button>
           </div>
         </div>
-      ) : null}{" "}
-      {/* 🔒 Tidak tampilkan apapun kalau userDetail null dan loading sudah false */}
+      )}
     </>
   );
 };

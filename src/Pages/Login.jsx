@@ -1,17 +1,16 @@
-import {
-  signInWithEmailAndPassword,
-  signInWithPopup,
-  onAuthStateChanged,
-} from "firebase/auth";
+import { onAuthStateChanged } from "firebase/auth";
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { auth, googleProvider, db } from "../firebase/config";
-import { setDoc, doc, getDoc } from "firebase/firestore";
+import { useAuthContext } from "../contexts/AuthContext";
 
 export const Login = () => {
-  const [emailAddress, setEmailAddress] = useState("");
-  const [password, setPassword] = useState("");
+  // const [emailAddress, setEmailAddress] = useState("");
+  // const [password, setPassword] = useState("");
   const [isShowPass, setIsShowPass] = useState(false);
+
+  const { email, setEmail, password, setPassword, signInEmail, signInGoogle } =
+    useAuthContext();
 
   // const [signInWithGoogle, setSignInWithGoogle] = useState("")
 
@@ -31,43 +30,12 @@ export const Login = () => {
 
   const handleLoginWithGoogle = async (e) => {
     e.preventDefault();
-    try {
-      const signInGoogle = await signInWithPopup(auth, googleProvider);
-      const userDetail = signInGoogle.user;
-
-      const useRef = doc(db, "Users", userDetail.uid);
-      const userSnap = await getDoc(useRef);
-      if (!userSnap.exists()) {
-        await setDoc(useRef, {
-          email: userDetail.email,
-          fullName: userDetail.displayName,
-        });
-      }
-    } catch (err) {
-      console.error(err);
-    }
+    signInGoogle(db, auth, googleProvider);
   };
 
   const handleLogin = async (e) => {
     e.preventDefault();
-
-    if (emailAddress.trim() === "" || password.trim() === "") {
-      alert("Input Field cannot be empty");
-      return;
-    }
-
-    if (password.length < 6) {
-      alert("Password at least more than 6 character!!");
-      return;
-    }
-
-    try {
-      await signInWithEmailAndPassword(auth, emailAddress, password);
-      alert("Login Successfully!");
-      navigate("/profile");
-    } catch (err) {
-      console.error(err);
-    }
+    signInEmail(auth, email, password);
   };
 
   return (
@@ -87,8 +55,8 @@ export const Login = () => {
                 type="email"
                 className="form-control"
                 id="email"
-                value={emailAddress}
-                onChange={(e) => setEmailAddress(e.target.value)}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 aria-describedby="emailHelp"
               />
               <div id="emailHelp" className="form-text">
