@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { auth, db } from "../firebase/config";
 import { doc, getDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
+import { signOut } from "firebase/auth";
 
 export const Profile = () => {
   const [loading, setLoading] = useState(true);
@@ -12,7 +13,7 @@ export const Profile = () => {
     const handleLogout = async (e) => {
       e.preventDefault();
       try {
-        await auth.signOut()
+        await signOut(auth)
         alert("You have been log out...")
         navigate("/login")
       } catch (error) {
@@ -100,6 +101,7 @@ export const Profile = () => {
       ) : (
         <div className="text-center text-danger mt-5">
           <h5>You are not Logged In!</h5>
+          <button className="btn btn-primary" onClick={handleLogout}>LogOut</button>
         </div>
       )}
     </>
