@@ -1,53 +1,23 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { createUserWithEmailAndPassword,  } from "firebase/auth";
+import { Link } from "react-router-dom";
 import { auth, db } from "../firebase/config";
-import { setDoc, doc } from "firebase/firestore";
+import { useAuthContext } from "../contexts/AuthContext";
 
 export const Register = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [userRegistered, setUserRegistered] = useState(null)
+  // const [name, setName] = useState("");
+  // const [email, setEmail] = useState("");
+  // const [password, setPassword] = useState("");
+  // const [userRegistered, setUserRegistered] = useState(null)
+  const {fullName, setFullName, email, setEmail, password, setPassword, signUpEmail} = useAuthContext()
 
 
   const [isShowPass, setIsShowPass] = useState(false);
-  const navigate = useNavigate()
 
   
   
   const handleRegister = async (e) => {
     e.preventDefault();
-    const trimmedName = name.trim();
-    const trimmedEmail = email.trim();
-    const trimmedPassword = password.trim();
-    
-    if (trimmedName === "" || trimmedEmail === "" || trimmedPassword === "") {
-      alert("Input fields cannot be empty or only spaces!");
-      return;
-    }
-    if(password.length < 6) {
-      alert("Create password at least 6 length!!")
-      return;
-    }
-    alert("Registering...")
-    try {
-      const userCredintial = await createUserWithEmailAndPassword(auth, email, password);
-      setUserRegistered(userCredintial.user)
-      const user = auth.currentUser;
-      if(user) {
-        await setDoc(doc(db, "Users", user.uid), {
-          email: user.email,
-          fullName: name
-        })
-      }
-      if(userRegistered) {
-        navigate('/profile')
-      }
-      alert("Register Success!!")
-    } catch (error) {
-      console.error(error)
-    } 
+    signUpEmail(db, auth, email, password)
   };
 
   return (
@@ -68,8 +38,8 @@ export const Register = () => {
                 id="name"
                 className="form-control"
                 placeholder="Your name..."
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
                 required
               />
             </div>

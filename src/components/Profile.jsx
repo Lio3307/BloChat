@@ -1,25 +1,26 @@
 import { useState, useEffect } from "react";
 import { auth, db } from "../firebase/config";
-import { doc, getDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { signOut } from "firebase/auth";
+import { useAuthContext } from "../contexts/AuthContext";
 
 export const Profile = () => {
   const [loading, setLoading] = useState(true);
-  const [userDetail, setUserDetail] = useState(null);
 
   const navigate = useNavigate();
 
-    const handleLogout = async (e) => {
-      e.preventDefault();
-      try {
-        await signOut(auth)
-        alert("You have been log out...")
-        navigate("/login")
-      } catch (error) {
-        console.error(error)
-      }
-    };
+  const { userDetail, subscribe } = useAuthContext();
+
+  const handleLogout = async (e) => {
+    e.preventDefault();
+    try {
+      await signOut(auth);
+      alert("You have been log out...");
+      navigate("/login");
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   //With Non Unscubscribe
   //   useEffect(() => {
@@ -46,28 +47,15 @@ export const Profile = () => {
   //   }, []);
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(async (user) => {
-      if (user) {
-        try {
-          const docRef = doc(db, "Users", user.uid);
-          const docSnap = await getDoc(docRef);
-          if (docSnap.exists()) {
-            setUserDetail(docSnap.data());
-          } else {
-            console.log("User document not found.");
-          }
-        } catch (error) {
-          console.error("Error fetching user data:", error);
-        }
-      } else {
-        setUserDetail(null); // explicitly set to null
-      }
+    let unsubs;
+    try {
+      const unsubscribe = subscribe(auth, db, setLoading);
+      unsubs = unsubscribe;
+    } catch (err) {
+      console.error(err);
+    }
 
-      // ✅ only set loading false after this block runs
-      setLoading(false);
-    });
-
-    return () => unsubscribe();
+    return () => unsubs && unsubs();
   }, []);
 
   return (
@@ -93,14 +81,13 @@ export const Profile = () => {
               <strong>Email:</strong>
               <p className="form-control-plaintext">{userDetail.email}</p>
             </div>
-            <button onClick={handleLogout} className="btn btn-danger">LogOut</button>
+            <button onClick={handleLogout} className="btn btn-danger">
+              LogOut
+            </button>
           </div>
         </div>
-      ) : (
-        <div className="text-center text-danger mt-5">
-          <h5>You are not Logged In!</h5>
-        </div>
-      )}
+      ) : null}{" "}
+      {/* 🔒 Tidak tampilkan apapun kalau userDetail null dan loading sudah false */}
     </>
   );
 };

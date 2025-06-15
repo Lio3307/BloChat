@@ -18,7 +18,7 @@ export const Login = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
         navigate("/profile");
       } else {
@@ -124,12 +124,12 @@ export const Login = () => {
               Dont have account? <Link to="/register">Sign Up Here!</Link>{" "}
             </p>
 
-            <button type="submit" className="btn btn-primary w-100">
+            <button type="submit" className="btn m-2 btn-primary w-100">
               Login
             </button>
             <button
               onClick={handleLoginWithGoogle}
-              className="btn btn-success w-100"
+              className="btn m-2 btn-success w-100"
             >
               Login With Google
             </button>
