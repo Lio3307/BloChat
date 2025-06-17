@@ -6,6 +6,7 @@ import { Profile } from "./components/Profile";
 import { auth } from "./firebase/config";
 import { NavBar } from "./components/NavBar";
 import { Home } from "./Pages/Home";
+import { TextPost } from "./components/TextPost";
 
 function App() {
 
@@ -28,6 +29,7 @@ function App() {
         <Route path="/register" element={rememberUser ? <Navigate to={"/home"}/> : <Register />} />
         <Route path="/profile" element={<Profile/>}/>
         <Route path="/home" element={<Home />}/>
+        <Route path="/create-post" element={<TextPost />}/>
       </Routes>
     </>
   );

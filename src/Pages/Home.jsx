@@ -1,8 +1,8 @@
 import { signOut } from "firebase/auth";
 import { auth, db } from "../firebase/config";
-import { getDoc, doc } from "firebase/firestore";
+import { getDoc, doc, } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 export const Home = () => {
   const [showFullName, setFullName] = useState("");
@@ -31,6 +31,7 @@ export const Home = () => {
       }
     };
 
+
     fetchDataUser();
   }, []);
 
@@ -56,6 +57,8 @@ export const Home = () => {
       ) : (<>
         <h3>Welcome {showFullName}</h3>
         <button className="btn btn-danger" onClick={handleLogOut}>LogOut</button>
+        <Link to={"/create-post"}>Add Post</Link>
+        
         </>
       )}
     </>
