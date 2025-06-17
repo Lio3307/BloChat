@@ -29,7 +29,7 @@ function App() {
         <Route path="/register" element={rememberUser ? <Navigate to={"/home"}/> : <Register />} />
         <Route path="/profile" element={<Profile/>}/>
         <Route path="/home" element={<Home />}/>
-        <Route path="/create-post" element={<TextPost />}/>
+        <Route path="/create-post" element={<TextPost/>}/>
       </Routes>
     </>
   );

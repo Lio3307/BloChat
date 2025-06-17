@@ -55,7 +55,7 @@ export const TextPost = () => {
           placeholder="Leave a comment here"
           id="floatingTextarea2"
           style="height: 100px"
-        />
+        ></textarea>
         <label for="floatingTextarea2">Comments</label>
 
           <label>Title</label><br />

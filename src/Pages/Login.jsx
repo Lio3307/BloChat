@@ -19,7 +19,7 @@ export const Login = () => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
-        navigate("/profile");
+        navigate("/home");
       } else {
         console.log("User not logged in");
       }
