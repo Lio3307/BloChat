@@ -14,7 +14,7 @@ export const Home = () => {
       alert("You cannot access this page, login or register first!!");
       navigate("/register");
     }
-  }, [loading, userDetail, navigate]);
+  }, [loading, userDetail]);
 
   const handleLogOut = async (e) => {
     e.preventDefault();

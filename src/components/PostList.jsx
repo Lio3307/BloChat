@@ -33,22 +33,18 @@ export const PostList = () => {
           <h3>Loading...</h3>
         </div>
       ) : (
-        console.log(allPost)
-        // allPost.map((data) => (
-        //   <div className="card">
-        //     <div className="card-header">{data.}</div>
-        //     <div className="card-body">
-        //       <h5 className="card-title">Special title treatment</h5>
-        //       <p className="card-text">
-        //         With supporting text below as a natural lead-in to additional
-        //         content.
-        //       </p>
-        //       <a href="#" className="btn btn-primary">
-        //         Go somewhere
-        //       </a>
-        //     </div>
-        //   </div>
-        // ))
+        allPost.map((data) => (
+          <div className="card" key={data.id}>
+            <div className="card-header">{data.userName}</div>
+            <div className="card-body">
+              <h5 className="card-title">{data.postTitle}</h5>
+              <p className="card-text">{data.postText}</p>
+              <a href="#" className="btn btn-primary">
+                Go somewhere
+              </a>
+            </div>
+          </div>
+        ))
       )}
     </>
   );

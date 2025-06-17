@@ -1,35 +1,43 @@
-import { useState, useEffect } from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { useEffect } from "react";
+import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import { Login } from "./Pages/Login";
 import { Register } from "./Pages/Register";
 import { Profile } from "./components/Profile";
-import { auth } from "./firebase/config";
 import { NavBar } from "./components/NavBar";
 import { Home } from "./Pages/Home";
 import { TextPost } from "./components/TextPost";
+import { useAuthContext } from "./contexts/AuthContext";
 
 function App() {
-
-  const  [rememberUser, setRememberUser] = useState("")
+  const { loading, userDetail } = useAuthContext();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    auth.onAuthStateChanged((user) => {
-      setRememberUser(user)
-    })
-  })
+    if (!loading) {
+      if (userDetail) {
+        navigate("/home");
+      } else {
+        navigate("/login");
+      }
+    }
+  }, [loading, userDetail]);
 
   return (
     <>
-
-
-      <NavBar/>
+      <NavBar />
       <Routes>
-        <Route path="/" element={rememberUser ? <Navigate to={"/profile"}/> : <Login />} />
+        <Route
+          path="/"
+          element={userDetail ? <Navigate to={"/home"} /> : <Login />}
+        />
         <Route path="/login" element={<Login />} />
-        <Route path="/register" element={rememberUser ? <Navigate to={"/home"}/> : <Register />} />
-        <Route path="/profile" element={<Profile/>}/>
-        <Route path="/home" element={<Home />}/>
-        <Route path="/create-post" element={<TextPost/>}/>
+        <Route
+          path="/register"
+          element={userDetail ? <Navigate to={"/home"} /> : <Register />}
+        />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/home" element={<Home />} />
+        <Route path="/create-post" element={<TextPost />} />
       </Routes>
     </>
   );

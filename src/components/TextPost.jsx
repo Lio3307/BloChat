@@ -37,45 +37,54 @@ export const TextPost = () => {
       createdAt: serverTimestamp(),
     });
 
-    alert("Posts Success!!");
-    fullName = "";
-    setTextPost("")
-    setTextPostTitle("")
+    alert("Post berhasil dikirim!");
+    setTextPost("");
+    setTextPostTitle("");
   };
 
   return (
-    <>
-      <div className="form-floating">
-        <textarea
-          value={textPost}
-          onChange={(e) => {
-            setTextPost(e.target.value);
-          }}
-          className="form-control"
-          placeholder="Leave a comment here"
-          id="floatingTextarea2"
-          style="height: 100px"
-        ></textarea>
-        <label for="floatingTextarea2">Comments</label>
+    <div className="container mt-5">
+      <div className="card shadow p-4">
+        <h4 className="mb-4 text-center">Buat Postingan Baru</h4>
+        <form onSubmit={addPostHandler}>
+          <div className="mb-3">
+            <label htmlFor="postTitle" className="form-label">
+              Judul
+            </label>
+            <input
+              id="postTitle"
+              value={textPostTitle}
+              onChange={(e) => setTextPostTitle(e.target.value)}
+              type="text"
+              className="form-control"
+              placeholder="Tulis judul postingan"
+              required
+            />
+          </div>
 
-          <label>Title</label><br />
-        <div className="input-group mb-3">
-          <input
-          value={textPostTitle}
-          onChange={(e) => {
-            setTextPostTitle(e.target.value)
-          }}
-            type="text"
-            className="form-control"
-            aria-label="Sizing example input"
-            aria-describedby="inputGroup-sizing-default"
-          />
-        </div>
+          <div className="mb-3">
+            <label htmlFor="postText" className="form-label">
+              Isi Postingan
+            </label>
+            <textarea
+              id="postText"
+              value={textPost}
+              onChange={(e) => setTextPost(e.target.value)}
+              className="form-control"
+              placeholder="Apa yang kamu pikirkan?"
+              style={{ height: "150px" }}
+              required
+            ></textarea>
+          </div>
 
-        <button onClick={addPostHandler} className="btn btn-success">
-          Posts
-        </button>
+          <div className="text-end">
+            <button type="submit" className="btn btn-success">
+              Kirim Postingan
+            </button>
+          </div>
+        </form>
       </div>
-    </>
+    </div>
   );
 };
+    
