@@ -55,8 +55,8 @@ export const Home = () => {
         </div>
         <hr />
         <div className="d-flex justify-content-between align-items-center">
-          <h5 className="mb-3">Your Posts</h5>
-          <Link to="/create-post" className="btn btn-success">
+          <h5 className="mb-3">Post List</h5>
+          <Link to="/create-post" className="m-2 btn btn-success">
             + Create New Post
           </Link>
         </div>

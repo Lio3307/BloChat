@@ -27,6 +27,9 @@ export const NavBar = () => {
               <Link to={"/profile"} className="nav-link">
                   Profile
               </Link>
+              <Link to={"/your-post"} className="nav-link">
+                  Your Post
+              </Link>
             </ul>
           </div>
         </div>

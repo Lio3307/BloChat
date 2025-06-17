@@ -8,9 +8,13 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 
+import { useNavigate } from "react-router-dom";
+
 export const TextPost = () => {
   const [textPost, setTextPost] = useState("");
   const [textPostTitle, setTextPostTitle] = useState("");
+
+  const navigate = useNavigate();
 
   const addPostHandler = async (e) => {
     e.preventDefault();
@@ -40,6 +44,7 @@ export const TextPost = () => {
     alert("Post berhasil dikirim!");
     setTextPost("");
     setTextPostTitle("");
+    navigate("/home");
   };
 
   return (
@@ -87,4 +92,3 @@ export const TextPost = () => {
     </div>
   );
 };
-    

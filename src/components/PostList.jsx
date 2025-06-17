@@ -1,6 +1,7 @@
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../firebase/config";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 export const PostList = () => {
   const [loading, setLoading] = useState(true);
@@ -49,12 +50,20 @@ export const PostList = () => {
               <h6 className="card-subtitle mb-2 text-muted">
                 By {data.userName || "Unknown"}
               </h6>
-              <p className="card-text">{data.postText}</p>
+              <p className="text-muted small">
+                Created : {data.createdAt?.toDate().toLocaleString() || "Unknown date"}
+              </p>
+              <p className="card-text">
+                {data.postText}
+              </p>
             </div>
             <div className="card-footer bg-white border-top-0 text-end">
-              <button className="btn btn-sm btn-outline-primary">
+              <Link
+                to={`/view-detail/${data.id}`}
+                className="btn btn-sm btn-outline-primary"
+              >
                 Read More
-              </button>
+              </Link>
             </div>
           </div>
         </div>
