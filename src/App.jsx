@@ -7,6 +7,7 @@ import { NavBar } from "./components/NavBar";
 import { Home } from "./Pages/Home";
 import { TextPost } from "./components/TextPost";
 import { useAuthContext } from "./contexts/AuthContext";
+import { PrivateRoute } from "./components/PrivateRoute";
 
 function App() {
   const { loading, userDetail } = useAuthContext();
@@ -24,7 +25,7 @@ function App() {
 
   return (
     <>
-      <NavBar />
+      {userDetail && <NavBar />}
       <Routes>
         <Route
           path="/"
@@ -36,7 +37,14 @@ function App() {
           element={userDetail ? <Navigate to={"/home"} /> : <Register />}
         />
         <Route path="/profile" element={<Profile />} />
-        <Route path="/home" element={<Home />} />
+        <Route
+          path="/home"
+          element={
+            <PrivateRoute>
+              <Home />
+            </PrivateRoute>
+          }
+        />
         <Route path="/create-post" element={<TextPost />} />
       </Routes>
     </>

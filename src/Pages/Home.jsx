@@ -18,7 +18,6 @@ export const Home = () => {
 
   const handleLogOut = async (e) => {
     e.preventDefault();
-
     try {
       await signOut(auth);
       navigate("/register");
@@ -29,32 +28,40 @@ export const Home = () => {
 
   if (loading) {
     return (
-      <div className="d-flex justify-content-center align-items-center my-5">
-        <div className="spinner-border text-primary" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </div>
+      <div className="d-flex justify-content-center align-items-center vh-100">
+        <div className="spinner-border text-primary" role="status" />
       </div>
     );
   }
 
   if (!userDetail) {
     return (
-      <div className="d-flex justify-content-center align-items-center my-5">
-        <div className="spinner-border text-primary" role="status">
-          <span className="visually-hidden">Redirecting...</span>
-        </div>
+      <div className="d-flex justify-content-center align-items-center vh-100">
+        <div className="spinner-border text-primary" role="status" />
       </div>
     );
   }
 
   return (
-    <>
-      <h3>Welcome {userDetail.fullName}</h3>
-      <button className="btn btn-danger" onClick={handleLogOut}>
-        LogOut
-      </button>
-      <Link to={"/create-post"}>Add Post</Link>
-      <PostList />
-    </>
+    <div className="container py-4">
+      <div className="card shadow-sm p-4 mb-4 bg-light rounded">
+        <div className="d-flex justify-content-between align-items-center">
+          <h3 className="text-primary mb-0">
+            Welcome, <span className="fw-bold">{userDetail.fullName}</span>
+          </h3>
+          <button className="btn btn-outline-danger" onClick={handleLogOut}>
+            Log Out
+          </button>
+        </div>
+        <hr />
+        <div className="d-flex justify-content-between align-items-center">
+          <h5 className="mb-3">Your Posts</h5>
+          <Link to="/create-post" className="btn btn-success">
+            + Create New Post
+          </Link>
+        </div>
+        <PostList />
+      </div>
+    </div>
   );
 };
