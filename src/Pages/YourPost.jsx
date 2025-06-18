@@ -53,33 +53,50 @@ export const YourPost = () => {
   }
 
   return (
-    <div className="container mt-4">
-      <h3 className="mb-4 text-center text-primary">Your Posts</h3>
-      <div className="row row-cols-1 row-cols-md-2 g-4">
-        {getUserPost.map((post) => (
-          <div className="col" key={post.id}>
-            <div className="card h-100 shadow-sm border-0">
-              <div className="card-body">
-                <h5 className="card-title">{post.postTitle}</h5>
-                <p className="card-text text-muted">{post.postText}</p>
-              </div>
-                <small className="text-muted">
-                  Created : {post.createdAt?.toDate().toLocaleString()}
-                </small>
-              <div className="card-footer bg-white border-top-0 d-flex justify-content-between align-items-center">
-                <small className="text-muted">
-                  By: {post.userName || "Unknown"}
-                </small>
-                <Link
-                  to={`/view-detail/${post.id}`}
-                  className="btn btn-sm btn-outline-primary"
-                >
-                  View Detail
-                </Link>
+    <div className="container py-4">
+      <div className="card shadow-sm p-4 mb-4 bg-light rounded">
+        <div className="d-flex justify-content-between align-items-center"></div>
+        <hr />
+        <div className="d-flex justify-content-between align-items-center">
+          <h5 className="mb-3">Your Post</h5>
+          <Link to="/create-post" className="m-2 btn btn-success">
+            + Create New Post
+          </Link>
+        </div>
+
+        <div className="row row-cols-1 row-cols-md-2 g-4">
+          {getUserPost.map((data) => (
+            <div className="col" key={data.id}>
+              <div className="card h-100 shadow-sm">
+                <div className="card-body">
+                  <h5 className="card-title text-primary">{data.postTitle}</h5>
+                  <h6 className="card-subtitle mb-2 text-muted">
+                    By {data.userName || "Unknown"}
+                  </h6>
+                  <p className="text-muted small">
+                    Created :{" "}
+                    {data.createdAt?.toDate().toLocaleString() ||
+                      "Unknown date"}
+                  </p>
+                  <p
+                    className="card-text text-truncate"
+                    style={{ maxWidth: "150px" }}
+                  >
+                    {data.postText}
+                  </p>
+                </div>
+                <div className="card-footer bg-white border-top-0 text-end">
+                  <Link
+                    to={`/view-detail/${data.id}`}
+                    className="btn btn-sm btn-outline-primary"
+                  >
+                    Read More
+                  </Link>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   );

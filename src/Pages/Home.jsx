@@ -44,22 +44,44 @@ export const Home = () => {
 
   return (
     <div className="container py-4">
+      {/* Header */}
       <div className="card shadow-sm p-4 mb-4 bg-light rounded">
-        <div className="d-flex justify-content-between align-items-center">
-          <h3 className="text-primary mb-0">
+        <div className="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4">
+          <h3 className="text-primary mb-2 mb-md-0">
             Welcome, <span className="fw-bold">{userDetail.fullName}</span>
           </h3>
           <button className="btn btn-outline-danger" onClick={handleLogOut}>
             Log Out
           </button>
         </div>
-        <hr />
-        <div className="d-flex justify-content-between align-items-center">
-          <h5 className="mb-3">Post List</h5>
-          <Link to="/create-post" className="m-2 btn btn-success">
-            + Create New Post
-          </Link>
+
+        {/* Upload area */}
+        <div className="card shadow-sm mb-4">
+          <div className="card-body d-flex align-items-center">
+            <img
+              src={`https://ui-avatars.com/api/?name=${userDetail.fullName}&background=random`}
+              alt="avatar"
+              className="rounded-circle me-3"
+              style={{ width: "45px", height: "45px" }}
+            />
+            <Link
+              to="/create-post"
+              className="form-control bg-light text-muted rounded-pill text-start"
+              style={{
+                textDecoration: "none",
+                padding: "10px 15px",
+                fontSize: "0.9rem",
+              }}
+            >
+              What's on your mind?
+            </Link>
+          </div>
         </div>
+
+        <div className="d-flex justify-content-between align-items-center mb-3">
+          <h5 className="mb-0">Post List</h5>
+        </div>
+
         <PostList />
       </div>
     </div>
