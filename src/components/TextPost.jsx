@@ -8,7 +8,7 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 export const TextPost = () => {
   const [textPost, setTextPost] = useState("");
@@ -49,45 +49,53 @@ export const TextPost = () => {
 
   return (
     <div className="container mt-5">
-      <div className="card shadow p-4">
-        <h4 className="mb-4 text-center">Buat Postingan Baru</h4>
-        <form onSubmit={addPostHandler}>
-          <div className="mb-3">
-            <label htmlFor="postTitle" className="form-label">
-              Judul
-            </label>
-            <input
-              id="postTitle"
-              value={textPostTitle}
-              onChange={(e) => setTextPostTitle(e.target.value)}
-              type="text"
-              className="form-control"
-              placeholder="Tulis judul postingan"
-              required
-            />
-          </div>
+      <div className="row justify-content-center">
+        <div className="col-lg-8">
+          <div className="card shadow-lg rounded-4 border-0 p-4">
+            <h4 className="mb-4 text-center text-primary fw-semibold">
+              Buat Postingan Baru
+            </h4>
+            <form onSubmit={addPostHandler}>
+              <div className="mb-3">
+                <label htmlFor="postTitle" className="form-label fw-medium">
+                  Judul Postingan
+                </label>
+                <input
+                  id="postTitle"
+                  type="text"
+                  value={textPostTitle}
+                  onChange={(e) => setTextPostTitle(e.target.value)}
+                  className="form-control rounded-3"
+                  required
+                />
+              </div>
 
-          <div className="mb-3">
-            <label htmlFor="postText" className="form-label">
-              Isi Postingan
-            </label>
-            <textarea
-              id="postText"
-              value={textPost}
-              onChange={(e) => setTextPost(e.target.value)}
-              className="form-control"
-              placeholder="Apa yang kamu pikirkan?"
-              style={{ height: "150px" }}
-              required
-            ></textarea>
-          </div>
+              <div className="mb-3">
+                <label htmlFor="postText" className="form-label fw-medium">
+                  Isi Postingan
+                </label>
+                <textarea
+                  id="postText"
+                  value={textPost}
+                  onChange={(e) => setTextPost(e.target.value)}
+                  className="form-control rounded-3"
+                  placeholder="Apa yang ingin kamu bagikan hari ini?"
+                  style={{ height: "180px" }}
+                  required
+                ></textarea>
+              </div>
 
-          <div className="text-end">
-            <button type="submit" className="btn btn-success">
-              Kirim Postingan
-            </button>
+              <div className="d-flex justify-content-between align-items-center mt-4">
+                <Link to="/home" className="btn btn-outline-secondary">
+                  ← Kembali
+                </Link>
+                <button type="submit" className="btn btn-success">
+                  Kirim Postingan
+                </button>
+              </div>
+            </form>
           </div>
-        </form>
+        </div>
       </div>
     </div>
   );

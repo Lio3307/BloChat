@@ -47,29 +47,90 @@ export const ViewDetail = () => {
     getPostById();
   }, [id]);
 
-  if (loading) return <div className="text-center mt-5">Loading...</div>;
-  if (!getDataById) return <p className="text-danger">Post not found!</p>;
+  if (loading) {
+    return (
+      <div className="d-flex justify-content-center align-items-center vh-100">
+        <div className="text-center">
+          <div className="spinner-border text-primary mb-3" role="status"></div>
+          <p className="text-muted">Memuat data postingan...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!getDataById) {
+    return (
+      <div className="d-flex justify-content-center align-items-center vh-100">
+        <div className="text-center">
+          <h5 className="text-danger">⚠️ Postingan tidak ditemukan ⚠️</h5>
+          <p className="text-muted">Mungkin sudah dihapus</p>
+          <Link to="/home" className="btn btn-outline-secondary mt-3">
+            ← Kembali ke Beranda
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="container my-5">
+    <div className="container py-5 position-relative">
       <div className="mb-4">
-        <Link to="/" className="btn btn-outline-secondary btn-sm">
+        <Link to="/home" className="btn btn-secondary btn-sm rounded-pill px-3">
           ← Back to Home
         </Link>
       </div>
 
-      <div className="card shadow rounded-4 p-4 border-0">
+      <div className="bg-white shadow-sm rounded-4 p-4 border position-relative">
+        {isIdUserMatch && (
+          <div className="position-absolute top-0 end-0 p-3">
+            <div className="dropdown">
+              <button
+                className="btn btn-light border rounded-circle"
+                type="button"
+                id="dropdownMenuButton"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <i className="bi bi-three-dots-vertical"></i>
+              </button>
+
+              <ul
+                className="dropdown-menu dropdown-menu-end"
+                aria-labelledby="dropdownMenuButton"
+              >
+                <li>
+                  <Link className="dropdown-item" to={`/edit-post/${id}`}>
+                    ✏️ Edit
+                  </Link>
+                </li>
+                <li>
+                  <button
+                    className="dropdown-item text-danger"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      deletePost(getDataById.id);
+                      navigate("/home");
+                    }}
+                  >
+                    🗑 Delete
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </div>
+        )}
+
         <div className="d-flex align-items-center mb-4">
           <img
             src={`https://ui-avatars.com/api/?name=${
               getDataById.userName || "U"
             }&background=random`}
             alt="avatar"
-            className="rounded-circle me-3"
-            style={{ width: "60px", height: "60px", objectFit: "cover" }}
+            className="rounded-circle me-3 border shadow-sm"
+            style={{ width: "55px", height: "55px", objectFit: "cover" }}
           />
           <div>
-            <h5 className="fw-bold mb-1">
+            <h5 className="fw-semibold mb-1">
               {getDataById.userName || "Unknown Author"}
             </h5>
             <small className="text-muted">
@@ -79,34 +140,14 @@ export const ViewDetail = () => {
           </div>
         </div>
 
-        <h3 className="text-primary fw-semibold mb-3">
-          {getDataById.postTitle}
-        </h3>
+        {/* Future media area */}
+        {/* <img src={getDataById.imageUrl} className="img-fluid rounded mb-3" alt="Post media" /> */}
 
-        <hr className="opacity-50" />
+        <h4 className="fw-bold text-primary mb-3">{getDataById.postTitle}</h4>
 
-        <p className="fs-5 lh-lg text-secondary">{getDataById.postText}</p>
-
-        {isIdUserMatch && (
-          <div className="mt-5 d-flex justify-content-end gap-2">
-            <Link
-              to={`/edit-post/${id}`}
-              className="btn btn-outline-primary btn-sm"
-            >
-              ✏️ Edit
-            </Link>
-            <button
-              onClick={(e) => {
-                e.preventDefault();
-                deletePost(getDataById.id);
-                navigate("/home");
-              }}
-              className="btn btn-outline-danger btn-sm"
-            >
-              🗑 Delete
-            </button>
-          </div>
-        )}
+        <p className="text-secondary fs-5" style={{ whiteSpace: "pre-wrap" }}>
+          {getDataById.postText}
+        </p>
       </div>
     </div>
   );

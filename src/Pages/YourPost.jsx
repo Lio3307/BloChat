@@ -37,9 +37,14 @@ export const YourPost = () => {
 
   if (loading) {
     return (
-      <div className="text-center my-5">
-        <div className="spinner-border text-primary" role="status" />
-        <p className="mt-2">Loading your posts...</p>
+      <div className="d-flex flex-column justify-content-center align-items-center vh-100">
+        <div
+          className="spinner-border text-primary"
+          role="status"
+          style={{ width: "3rem", height: "3rem" }}
+        >
+        </div>
+        <p className="mt-3 text-muted fs-5">Loading Your Posts...</p>
       </div>
     );
   }
