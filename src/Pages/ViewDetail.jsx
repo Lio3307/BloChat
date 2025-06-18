@@ -9,7 +9,7 @@ export const ViewDetail = () => {
   const [loading, setLoading] = useState(true);
   const [isIdUserMatch, setIsIdUserMatch] = useState(null);
 
-  import
+  import { deletePost } from "../utils/deletePost";
 
   useEffect(() => {
     const getUserIdIsMatch = async () => {
