@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 import { Link } from "react-router-dom";
+import { deletePost } from "../utils/deletePost";
 
 export const YourPost = () => {
   const [loading, setLoading] = useState(true);
@@ -42,8 +43,7 @@ export const YourPost = () => {
           className="spinner-border text-primary"
           role="status"
           style={{ width: "3rem", height: "3rem" }}
-        >
-        </div>
+        ></div>
         <p className="mt-3 text-muted fs-5">Loading Your Posts...</p>
       </div>
     );
@@ -58,50 +58,113 @@ export const YourPost = () => {
   }
 
   return (
-    <div className="container py-4">
-      <div className="card shadow-sm p-4 mb-4 bg-light rounded">
-        <div className="d-flex justify-content-between align-items-center"></div>
-        <hr />
-        <div className="d-flex justify-content-between align-items-center">
-          <h5 className="mb-3">Your Post</h5>
-          <Link to="/create-post" className="m-2 btn btn-success">
-            + Create New Post
-          </Link>
-        </div>
+    <div className="container py-5">
+      <div className="d-flex justify-content-between align-items-center mb-4">
+        <h3 className="fw-bold text-dark">📌 Postingan Kamu</h3>
+        <Link to="/create-post" className="btn btn-success rounded-pill px-4">
+          + Buat Postingan
+        </Link>
+      </div>
 
-        <div className="row row-cols-1 row-cols-md-2 g-4">
-          {getUserPost.map((data) => (
-            <div className="col" key={data.id}>
-              <div className="card h-100 shadow-sm">
-                <div className="card-body">
-                  <h5 className="card-title text-primary">{data.postTitle}</h5>
-                  <h6 className="card-subtitle mb-2 text-muted">
-                    By {data.userName || "Unknown"}
-                  </h6>
-                  <p className="text-muted small">
-                    Created :{" "}
-                    {data.createdAt?.toDate().toLocaleString() ||
-                      "Unknown date"}
-                  </p>
-                  <p
-                    className="card-text text-truncate"
-                    style={{ maxWidth: "150px" }}
+      <div className="row g-4">
+        {getUserPost.map((data) => (
+          <div className="col-12 col-md-6 col-lg-4" key={data.id}>
+            <div className="card border-0 shadow-sm rounded-4 h-100 position-relative">
+              <div className="position-absolute top-0 end-0 p-2">
+                <div className="dropdown">
+                  <button
+                    className="btn btn-light btn-sm border rounded-circle"
+                    type="button"
+                    id={`dropdown-${data.id}`}
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
                   >
-                    {data.postText}
-                  </p>
+                    <i className="bi bi-three-dots-vertical"></i>
+                  </button>
+
+                  <ul
+                    className="dropdown-menu dropdown-menu-end"
+                    aria-labelledby={`dropdown-${data.id}`}
+                  >
+                    <li>
+                      <Link
+                        className="dropdown-item"
+                        to={`/edit-post/${data.id}`}
+                      >
+                        ✏️ Edit
+                      </Link>
+                    </li>
+                    <li>
+                      <button
+                        className="dropdown-item text-danger"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          deletePost(data.id);
+                        }}
+                      >
+                        🗑 Delete
+                      </button>
+                    </li>
+                  </ul>
                 </div>
-                <div className="card-footer bg-white border-top-0 text-end">
+              </div>
+
+              <div className="card-body d-flex flex-column">
+                <div className="d-flex align-items-center mb-3">
+                  <img
+                    src={`https://ui-avatars.com/api/?name=${
+                      data.userName || "U"
+                    }&background=random`}
+                    alt="avatar"
+                    className="rounded-circle me-2"
+                    style={{ width: "40px", height: "40px" }}
+                  />
+                  <div>
+                    <h6 className="mb-0 fw-semibold">
+                      {data.userName || "Unknown"}
+                    </h6>
+                    <small className="text-muted">
+                      {data.createdAt?.toDate().toLocaleString() ||
+                        "Unknown date"}
+                    </small>
+                  </div>
+                </div>
+
+                <h5 className="card-title text-primary">{data.postTitle}</h5>
+                <p
+                  className="card-text text-muted"
+                  style={{
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    display: "-webkit-box",
+                    WebkitLineClamp: 4,
+                    WebkitBoxOrient: "vertical",
+                  }}
+                >
+                  {data.postText}
+                </p>
+
+                <div className="mt-auto d-flex justify-content-between align-items-center pt-3 border-top">
                   <Link
                     to={`/view-detail/${data.id}`}
-                    className="btn btn-sm btn-outline-primary"
+                    className="btn btn-sm btn-outline-primary rounded-pill px-3"
                   >
-                    Read More
+                    Lihat Detail
                   </Link>
+                  <span className="badge bg-light text-secondary border">
+                    {data.postText.length} kata
+                  </span>
                 </div>
               </div>
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
+
+        {getUserPost.length === 0 && (
+          <div className="text-center mt-5 text-muted">
+            <p className="fs-5">Kamu belum memiliki postingan.</p>
+          </div>
+        )}
       </div>
     </div>
   );
