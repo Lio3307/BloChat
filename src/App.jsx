@@ -10,6 +10,7 @@ import { useAuthContext } from "./contexts/AuthContext";
 import { PrivateRoute } from "./components/PrivateRoute";
 import { ViewDetail } from "./Pages/ViewDetail";
 import { YourPost } from "./Pages/YourPost";
+import { EditPost } from "./Pages/EditPost";
 
 function App() {
   const { loading, userDetail } = useAuthContext();
@@ -50,6 +51,7 @@ function App() {
         <Route path="/create-post" element={<TextPost />} />
         <Route path="/view-detail/:id" element={<ViewDetail/>}/>
         <Route path="/your-post" element={<YourPost/>} />
+        <Route path="/edit-post/:id" element={<EditPost/>} />
       </Routes>
     </>
   );

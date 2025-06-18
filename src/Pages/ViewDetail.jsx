@@ -1,7 +1,8 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { db, auth } from "../firebase/config";
 import { doc, getDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
+import { deletePost } from "../utils/deletePost";
 
 export const ViewDetail = () => {
   const { id } = useParams();
@@ -9,7 +10,7 @@ export const ViewDetail = () => {
   const [loading, setLoading] = useState(true);
   const [isIdUserMatch, setIsIdUserMatch] = useState(null);
 
-  import { deletePost } from "../utils/deletePost";
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getUserIdIsMatch = async () => {
@@ -68,13 +69,13 @@ export const ViewDetail = () => {
             style={{ width: "60px", height: "60px", objectFit: "cover" }}
           />
           <div>
-            <h5 className="fw-bold mb-0">
+            <h5 className="fw-bold mb-1">
               {getDataById.userName || "Unknown Author"}
             </h5>
-            <span className="badge bg-light text-muted">
+            <small className="text-muted">
               {getDataById.createdAt?.toDate().toLocaleString() ||
                 "Unknown Date"}
-            </span>
+            </small>
           </div>
         </div>
 
@@ -82,14 +83,27 @@ export const ViewDetail = () => {
           {getDataById.postTitle}
         </h3>
 
-        <hr />
+        <hr className="opacity-50" />
 
-        <p className="fs-5 lh-lg">{getDataById.postText}</p>
+        <p className="fs-5 lh-lg text-secondary">{getDataById.postText}</p>
 
         {isIdUserMatch && (
-          <div className="mt-4 text-end">
-            <button className="btn btn-outline-danger btn-sm">
-              🗑 Delete Post
+          <div className="mt-5 d-flex justify-content-end gap-2">
+            <Link
+              to={`/edit-post/${id}`}
+              className="btn btn-outline-primary btn-sm"
+            >
+              ✏️ Edit
+            </Link>
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                deletePost(getDataById.id);
+                navigate("/home");
+              }}
+              className="btn btn-outline-danger btn-sm"
+            >
+              🗑 Delete
             </button>
           </div>
         )}
