@@ -10,6 +10,7 @@ import {
 
 export const CreateCommentForm = ({id, setRefreshTrigger}) => {
   const [commentText, setCommentText] = useState("");
+    const [sendingComment, setSendingComment] = useState(false)
 
   const handleAddComment = async (e) => {
     e.preventDefault();
@@ -17,6 +18,7 @@ export const CreateCommentForm = ({id, setRefreshTrigger}) => {
       alert("input field cannot be empty!!");
       return;
     }
+    setSendingComment(true)
     try {
       const user = auth.currentUser;
       const commentCollec = collection(db, "Posts", id, "Comment");
@@ -26,7 +28,6 @@ export const CreateCommentForm = ({id, setRefreshTrigger}) => {
       if (userSnap.exists()) {
         getFullName = userSnap.data().fullName;
       }
-
       await addDoc(commentCollec, {
         userName: getFullName,
         userId : user.uid,
@@ -38,6 +39,8 @@ export const CreateCommentForm = ({id, setRefreshTrigger}) => {
       setRefreshTrigger(prev => !prev)
     } catch (err) {
       console.error(err);
+    } finally {
+        setSendingComment(false)
     }
   };
 
@@ -51,7 +54,7 @@ export const CreateCommentForm = ({id, setRefreshTrigger}) => {
         }}
         type="text"
       />
-      <button onClick={handleAddComment}>Comment</button>
+      <button onClick={handleAddComment} disabled={sendingComment}>Comment</button>
     </>
   );
 };
