@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { PostList } from "../components/PostList";
 import { useAuthContext } from "../contexts/AuthContext";
+import { NavBar } from "../components/NavBar";
 
 export const Home = () => {
   const { loading, userDetail } = useAuthContext();
@@ -66,7 +67,7 @@ export const Home = () => {
         <p className="text-muted">Share your thoughts with the world!</p>
       </div>
 
-      <div className="card mb-4 border-0 shadow rounded-3 bg-light-subtle">
+      <div className="card mb-4 border-0 shadow rounded-4 bg-light-subtle">
         <div className="card-body p-3">
           <Link
             to="/create-post"
@@ -81,7 +82,9 @@ export const Home = () => {
         </div>
       </div>
 
-      <div className="d-flex justify-content-between align-items-center mb-3">
+      <NavBar />
+
+      <div className="d-flex justify-content-between align-items-center mb-3 mt-4">
         <h5 className="fw-semibold text-dark">📬 Recent Posts</h5>
       </div>
 

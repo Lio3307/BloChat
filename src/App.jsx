@@ -28,7 +28,6 @@ function App() {
 
   return (
     <>
-      {userDetail && <NavBar />}
       <Routes>
         <Route
           path="/"

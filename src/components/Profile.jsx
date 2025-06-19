@@ -1,5 +1,4 @@
-import { useEffect } from "react";
-import { auth, db } from "../firebase/config";
+import { auth } from "../firebase/config";
 import { useNavigate } from "react-router-dom";
 import { signOut } from "firebase/auth";
 import { useAuthContext } from "../contexts/AuthContext";
@@ -7,7 +6,7 @@ import { useAuthContext } from "../contexts/AuthContext";
 export const Profile = () => {
   const navigate = useNavigate();
 
-  const { userDetail, subscribe, loading, setLoading } = useAuthContext();
+  const { userDetail, loading } = useAuthContext();
 
   const handleLogout = async (e) => {
     e.preventDefault();
@@ -19,36 +18,6 @@ export const Profile = () => {
       console.error(error);
     }
   };
-
-  //With Non Unscubscribe
-  //   useEffect(() => {
-  //     const getUserDetails = async () => {
-  //       try {
-  //         auth.onAuthStateChanged(async (user) => {
-  //           console.log(user);
-  //           const docRef = doc(db, "Users", user.uid);
-  //           const docSnap = await getDoc(docRef);
-  //           if (docSnap.exists()) {
-  //             setUserDetail(docSnap.data());
-  //           } else {
-  //             alert("User Not Login!!!");
-  //           }
-  //         });
-  //       } catch (err) {
-  //         console.error(err);
-  //       } finally {
-  //         setLoading(false);
-  //       }
-  //     };
-
-  //     getUserDetails();
-  //   }, []);
-
-  useEffect(() => {
-    const unsubscribe = subscribe(auth, db, setLoading);
-
-    return () => unsubscribe();
-  }, []);
 
   return (
     <>

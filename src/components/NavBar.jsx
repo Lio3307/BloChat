@@ -2,38 +2,26 @@ import { Link } from "react-router-dom";
 
 export const NavBar = () => {
   return (
-    <>
-      <nav className="navbar navbar-expand-lg bg-body-tertiary">
-        <div className="container-fluid">
-          <a className="navbar-brand" href="#">
-            Navbar
-          </a>
-          <button
-            className="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarNav"
-            aria-controls="navbarNav"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span className="navbar-toggler-icon"></span>
-          </button>
-          <div className="collapse navbar-collapse" id="navbarNav">
-            <ul className="navbar-nav">
-              <Link to={"/home"} className="nav-link">
-                  Home
-              </Link>
-              <Link to={"/profile"} className="nav-link">
-                  Profile
-              </Link>
-              <Link to={"/your-post"} className="nav-link">
-                  Your Post
-              </Link>
-            </ul>
-          </div>
-        </div>
-      </nav>
-    </>
+        <div className="sticky-top bg-white border-bottom shadow-sm z-3">
+      <div className="container py-2">
+        <ul className="nav justify-content-center gap-3">
+          <li className="nav-item">
+            <Link to="/home" className="nav-link text-dark fw-semibold">
+              Home
+            </Link>
+          </li>
+          <li className="nav-item">
+            <Link to="/profile" className="nav-link text-dark fw-semibold">
+              Profile
+            </Link>
+          </li>
+          <li className="nav-item">
+            <Link to="/your-post" className="nav-link text-dark fw-semibold">
+              Your Post
+            </Link>
+          </li>
+        </ul>
+      </div>
+    </div>
   );
 };
