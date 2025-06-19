@@ -1,5 +1,5 @@
 import { auth } from "../firebase/config";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { signOut } from "firebase/auth";
 import { useAuthContext } from "../contexts/AuthContext";
 
@@ -28,23 +28,38 @@ export const Profile = () => {
           </div>
         </div>
       ) : (
-        <div className="container d-flex justify-content-center mt-5">
+        <div className="container d-flex justify-content-center align-items-center mt-5">
           <div
-            className="card shadow-lg p-4"
-            style={{ maxWidth: "500px", width: "100%" }}
+            className="card shadow rounded-4 p-4 border-0 w-100"
+            style={{ maxWidth: "500px" }}
           >
-            <h3 className="text-center mb-3 text-primary">User Profile</h3>
-            <div className="mb-2">
-              <strong>Name:</strong>
-              <p className="form-control-plaintext">{userDetail.fullName}</p>
+            <div className="text-center mb-4">
+              <img
+                src={`https://ui-avatars.com/api/?name=${userDetail.fullName}&background=random`}
+                alt="avatar"
+                className="rounded-circle shadow-sm border border-light"
+                style={{ width: "90px", height: "90px", objectFit: "cover" }}
+              />
+              <h4 className="mt-3 fw-bold text-primary">
+                {userDetail.fullName}
+              </h4>
+              <span className="badge bg-secondary-subtle text-dark mt-1 px-3 py-1">
+                {userDetail.email}
+              </span>
             </div>
-            <div className="mb-2">
-              <strong>Email:</strong>
-              <p className="form-control-plaintext">{userDetail.email}</p>
+
+            <hr />
+
+            <div className="d-grid gap-2">
+              <button
+                onClick={handleLogout}
+                className="btn btn-outline-danger rounded-pill"
+              >
+                <i className="bi bi-box-arrow-right me-2" />
+                Logout
+              </button>
+              <Link to={"/home"}>Back</Link>
             </div>
-            <button onClick={handleLogout} className="btn btn-danger">
-              LogOut
-            </button>
           </div>
         </div>
       )}

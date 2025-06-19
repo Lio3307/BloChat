@@ -9,7 +9,7 @@ export const Login = () => {
   // const [password, setPassword] = useState("");
   const [isShowPass, setIsShowPass] = useState(false);
 
-  const { email, setEmail, password, setPassword, signInEmail, signInGoogle } =
+  const { email, setEmail, password, setPassword, signInEmail, signInGoogle, loading } =
     useAuthContext();
 
   // const [signInWithGoogle, setSignInWithGoogle] = useState("")
@@ -92,10 +92,11 @@ export const Login = () => {
               Dont have account? <Link to="/register">Sign Up Here!</Link>{" "}
             </p>
 
-            <button type="submit" className="btn m-2 btn-primary w-100">
+            <button disabled={loading} type="submit" className="btn m-2 btn-primary w-100">
               Login
             </button>
             <button
+              disabled={loading}
               onClick={handleLoginWithGoogle}
               className="btn m-2 btn-success w-100"
             >

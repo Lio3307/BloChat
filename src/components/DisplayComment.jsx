@@ -6,6 +6,8 @@ export const DisplayComment = ({id, refreshTrigger}) => {
 
   const [getCommentSection, setGetCommentSection] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [totalComment, setTotalComment] = useState(null)
+
 
   useEffect(() => {
     const getComment = async () => {
@@ -21,6 +23,7 @@ export const DisplayComment = ({id, refreshTrigger}) => {
             ...doc.data(),
           }));
           setGetCommentSection(comments);
+          setTotalComment(comments.length)
         }
       } catch (err) {
         console.error(err);
@@ -33,7 +36,7 @@ export const DisplayComment = ({id, refreshTrigger}) => {
   return (
     <>
       <div className="mt-4">
-        <h5 className="fw-bold mb-3">💬 Komentar</h5>
+        <h5 className="fw-bold mb-3">{totalComment} Komentar</h5>
 
         {loading ? (
           <div className="text-center my-4">

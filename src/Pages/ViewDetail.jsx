@@ -12,6 +12,8 @@ export const ViewDetail = () => {
   const [loading, setLoading] = useState(true);
   const [isIdUserMatch, setIsIdUserMatch] = useState(null);
 
+  const [updatingChange, setUpdatingChange] = useState(false)
+
   const [refreshTrigger, setRefreshTrigger] = useState(false);
 
   const navigate = useNavigate();
@@ -110,10 +112,18 @@ export const ViewDetail = () => {
                 <li>
                   <button
                     className="dropdown-item text-danger"
+                    disabled={updatingChange}
                     onClick={(e) => {
                       e.preventDefault();
-                      deletePost(id);
-                      navigate("/home");
+                      try {
+                        setUpdatingChange(true)
+                        deletePost(getData.postId);
+                      } catch (err) {
+                        console.error(err)
+                      } finally {
+                        setUpdatingChange(false)
+                        navigate("/home");
+                      }
                     }}
                   >
                     🗑 Delete

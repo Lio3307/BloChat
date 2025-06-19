@@ -8,7 +8,7 @@ export const Register = () => {
   // const [email, setEmail] = useState("");
   // const [password, setPassword] = useState("");
   // const [userRegistered, setUserRegistered] = useState(null)
-  const {fullName, setFullName, email, setEmail, password, setPassword, signUpEmail} = useAuthContext()
+  const {fullName, setFullName, email, setEmail, password, setPassword, signUpEmail, loading} = useAuthContext()
 
 
   const [isShowPass, setIsShowPass] = useState(false);
@@ -92,7 +92,7 @@ export const Register = () => {
               </div>
             </div>
 
-            <button type="submit" className="btn btn-success w-100">
+            <button disabled={loading} type="submit" className="btn btn-success w-100">
               Register
             </button>
           </form>
