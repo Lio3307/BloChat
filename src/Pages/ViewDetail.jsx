@@ -3,19 +3,23 @@ import { db, auth } from "../firebase/config";
 import { doc, getDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { deletePost } from "../utils/deletePost";
+import { CreateCommentForm } from "../components/CreateCommentForm";
+import { DisplayComment } from "../components/DisplayComment";
 
 export const ViewDetail = () => {
   const { id } = useParams();
-  const [getDataById, setGetDataById] = useState(null);
+  const [getData, setGetData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isIdUserMatch, setIsIdUserMatch] = useState(null);
+
+  const [refreshTrigger, setRefreshTrigger] = useState(false)
 
   const navigate = useNavigate();
 
   useEffect(() => {
     const getUserIdIsMatch = async () => {
       try {
-        const user = auth.currentUser;
+        const user = await auth.currentUser;
         const docRef = doc(db, "Posts", id);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
@@ -32,7 +36,7 @@ export const ViewDetail = () => {
         const docRef = doc(db, "Posts", id);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
-          setGetDataById({ id: docSnap.id, ...docSnap.data() });
+          setGetData({ postId: docSnap.id, ...docSnap.data() });
         } else {
           console.log("No such document!");
         }
@@ -58,7 +62,7 @@ export const ViewDetail = () => {
     );
   }
 
-  if (!getDataById) {
+  if (!getData) {
     return (
       <div className="d-flex justify-content-center align-items-center vh-100">
         <div className="text-center">
@@ -108,7 +112,7 @@ export const ViewDetail = () => {
                     className="dropdown-item text-danger"
                     onClick={(e) => {
                       e.preventDefault();
-                      deletePost(getDataById.id);
+                      deletePost(id);
                       navigate("/home");
                     }}
                   >
@@ -123,7 +127,7 @@ export const ViewDetail = () => {
         <div className="d-flex align-items-center mb-4">
           <img
             src={`https://ui-avatars.com/api/?name=${
-              getDataById.userName || "U"
+              getData.userName || "U"
             }&background=random`}
             alt="avatar"
             className="rounded-circle me-3 border shadow-sm"
@@ -131,23 +135,28 @@ export const ViewDetail = () => {
           />
           <div>
             <h5 className="fw-semibold mb-1">
-              {getDataById.userName || "Unknown Author"}
+              {getData.userName || "Unknown Author"}
             </h5>
             <small className="text-muted">
-              {getDataById.createdAt?.toDate().toLocaleString() ||
-                "Unknown Date"}
+              {getData.createdAt?.toDate().toLocaleString() || "Unknown Date"}
             </small>
           </div>
         </div>
 
         {/* Future media area */}
-        {/* <img src={getDataById.imageUrl} className="img-fluid rounded mb-3" alt="Post media" /> */}
+        {/* <img src={getData.imageUrl} className="img-fluid rounded mb-3" alt="Post media" /> */}
 
-        <h4 className="fw-bold text-primary mb-3">{getDataById.postTitle}</h4>
+        <h4 className="fw-bold text-primary mb-3">{getData.postTitle}</h4>
 
         <p className="text-secondary fs-5" style={{ whiteSpace: "pre-wrap" }}>
-          {getDataById.postText}
+          {getData.postText}
         </p>
+
+        <h5>Comment Section</h5>
+        <CreateCommentForm id={id} setRefreshTrigger={setRefreshTrigger} />
+
+        <h5>Comment List</h5>
+        <DisplayComment id={id} refreshTrigger={refreshTrigger}/>
       </div>
     </div>
   );

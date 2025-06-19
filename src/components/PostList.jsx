@@ -10,10 +10,11 @@ export const PostList = () => {
   useEffect(() => {
     const getAllPosts = async () => {
       try {
-        const queryPostSnapshot = await getDocs(collection(db, "Posts"));
+        const postCollection = collection(db, "Posts");
+        const queryPostSnapshot = await getDocs(postCollection);
         if (queryPostSnapshot) {
           const getAllPost = queryPostSnapshot.docs.map((doc) => ({
-            id: doc.id,
+            postId: doc.id,
             ...doc.data(),
           }));
           setAllPost(getAllPost);
@@ -43,7 +44,7 @@ export const PostList = () => {
   return (
     <div className="row">
       {allPost.map((data) => (
-        <div className="col-md-6 mb-4" key={data.id}>
+        <div className="col-md-6 mb-4" key={data.postId}>
           <div
             className="card h-100 border-0 shadow-sm rounded-4"
             style={{ backgroundColor: "#f8f9fa" }} // abu-abu terang agar beda dengan putih
@@ -81,7 +82,7 @@ export const PostList = () => {
 
               <div className="text-end">
                 <Link
-                  to={`/view-detail/${data.id}`}
+                  to={`/view-detail/${data.postId}`}
                   className="btn btn-primary btn-sm rounded-pill"
                 >
                   Read More
