@@ -12,7 +12,7 @@ export const ViewDetail = () => {
   const [loading, setLoading] = useState(true);
   const [isIdUserMatch, setIsIdUserMatch] = useState(null);
 
-  const [refreshTrigger, setRefreshTrigger] = useState(false)
+  const [refreshTrigger, setRefreshTrigger] = useState(false);
 
   const navigate = useNavigate();
 
@@ -84,7 +84,7 @@ export const ViewDetail = () => {
         </Link>
       </div>
 
-      <div className="bg-white shadow-sm rounded-4 p-4 border position-relative">
+      <div className="bg-white shadow-sm rounded-4 p-4 border position-relative mb-4">
         {isIdUserMatch && (
           <div className="position-absolute top-0 end-0 p-3">
             <div className="dropdown">
@@ -143,20 +143,21 @@ export const ViewDetail = () => {
           </div>
         </div>
 
-        {/* Future media area */}
-        {/* <img src={getData.imageUrl} className="img-fluid rounded mb-3" alt="Post media" /> */}
-
         <h4 className="fw-bold text-primary mb-3">{getData.postTitle}</h4>
 
         <p className="text-secondary fs-5" style={{ whiteSpace: "pre-wrap" }}>
           {getData.postText}
         </p>
+      </div>
 
-        <h5>Comment Section</h5>
+      <div className="card border-0 shadow-sm rounded-4 p-4 bg-light mb-4">
+        <h5 className="fw-bold mb-3 text-dark">💬 Tambahkan Komentar</h5>
         <CreateCommentForm id={id} setRefreshTrigger={setRefreshTrigger} />
+      </div>
 
-        <h5>Comment List</h5>
-        <DisplayComment id={id} refreshTrigger={refreshTrigger}/>
+      <div className="card border-0 shadow-sm rounded-4 p-4 bg-white">
+        <h5 className="fw-bold mb-3 text-dark">📄 Daftar Komentar</h5>
+        <DisplayComment id={id} refreshTrigger={refreshTrigger} />
       </div>
     </div>
   );
