@@ -44,20 +44,21 @@ export const PostList = () => {
   return (
     <div className="row">
       {allPost.map((data) => (
-        <div className="col-md-6 mb-4" key={data.postId}>
+        <div className="col-12 col-md-6 col-lg-4 mb-4" key={data.postId}>
           <div
             className="card h-100 border-0 shadow-sm rounded-4"
-            style={{ backgroundColor: "#f8f9fa" }} // abu-abu terang agar beda dengan putih
+            style={{ backgroundColor: "#fdfdfd" }} // warna putih sedikit berbeda dari default
           >
-            <div className="card-body">
+            <div className="card-body d-flex flex-column">
+              {/* Header: Avatar & User Info */}
               <div className="d-flex align-items-center mb-3">
                 <img
                   src={`https://ui-avatars.com/api/?name=${
                     data.userName || "U"
                   }&background=random`}
                   alt="avatar"
-                  className="rounded-circle me-3 border border-2 border-light"
-                  style={{ width: "45px", height: "45px" }}
+                  className="rounded-circle me-3 border border-2 border-light shadow-sm"
+                  style={{ width: "48px", height: "48px", objectFit: "cover" }}
                 />
                 <div>
                   <h6 className="mb-0 fw-semibold text-dark">
@@ -70,22 +71,31 @@ export const PostList = () => {
                 </div>
               </div>
 
-              <h5 className="fw-bold text-primary">{data.postTitle}</h5>
+              <h5 className="fw-bold text-primary mb-2">{data.postTitle}</h5>
+
               <p
-                className="text-secondary"
-                style={{ whiteSpace: "pre-wrap", fontSize: "0.95rem" }}
+                className="text-muted mb-3"
+                style={{
+                  whiteSpace: "pre-wrap",
+                  fontSize: "0.95rem",
+                  lineHeight: "1.5",
+                  flexGrow: 1,
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  display: "-webkit-box",
+                  WebkitLineClamp: 5,
+                  WebkitBoxOrient: "vertical",
+                }}
               >
-                {data.postText.length > 200
-                  ? data.postText.slice(0, 200) + "…"
-                  : data.postText}
+                {data.postText}
               </p>
 
-              <div className="text-end">
+              <div className="text-end mt-auto pt-3 border-top">
                 <Link
                   to={`/view-detail/${data.postId}`}
-                  className="btn btn-primary btn-sm rounded-pill"
+                  className="btn btn-outline-primary btn-sm rounded-pill px-3"
                 >
-                  Read More
+                  Baca Selengkapnya
                 </Link>
               </div>
             </div>

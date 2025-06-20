@@ -10,15 +10,14 @@ const firebaseConfig = {
   storageBucket: "fir-learntest-25495.firebasestorage.app",
   messagingSenderId: "976346293283",
   appId: "1:976346293283:web:7618daa55dc56eac2ffd96",
-  measurementId: "G-07ZBGZ50D6"
+  measurementId: "G-07ZBGZ50D6",
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
- const auth = getAuth(app);
- const db = getFirestore(app)
- const storage = getStorage(app)
- const googleProvider = new GoogleAuthProvider()
+const auth = getAuth(app);
+const db = getFirestore(app);
+const storage = getStorage(app);
+const googleProvider = new GoogleAuthProvider();
 
-
-export {auth, db, googleProvider, storage}
+export { auth, db, googleProvider, storage };

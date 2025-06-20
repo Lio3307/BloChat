@@ -12,7 +12,7 @@ export const ViewDetail = () => {
   const [loading, setLoading] = useState(true);
   const [isIdUserMatch, setIsIdUserMatch] = useState(null);
 
-  const [updatingChange, setUpdatingChange] = useState(false)
+  const [updatingChange, setUpdatingChange] = useState(false);
 
   const [refreshTrigger, setRefreshTrigger] = useState(false);
 
@@ -81,12 +81,12 @@ export const ViewDetail = () => {
   return (
     <div className="container py-5 position-relative">
       <div className="mb-4">
-        <Link to="/home" className="btn btn-secondary btn-sm rounded-pill px-3">
-          ← Back to Home
+        <Link to="/home" className="btn btn-secondary btn-sm rounded-pill px-4">
+          ← Kembali ke Beranda
         </Link>
       </div>
 
-      <div className="bg-white shadow-sm rounded-4 p-4 border position-relative mb-4">
+      <div className="bg-white shadow-sm rounded-4 p-4 border position-relative mb-5">
         {isIdUserMatch && (
           <div className="position-absolute top-0 end-0 p-3">
             <div className="dropdown">
@@ -99,34 +99,33 @@ export const ViewDetail = () => {
               >
                 <i className="bi bi-three-dots-vertical"></i>
               </button>
-
               <ul
                 className="dropdown-menu dropdown-menu-end"
                 aria-labelledby="dropdownMenuButton"
               >
                 <li>
                   <Link className="dropdown-item" to={`/edit-post/${id}`}>
-                    ✏️ Edit
+                    ✏️ Edit Postingan
                   </Link>
                 </li>
                 <li>
                   <button
                     className="dropdown-item text-danger"
                     disabled={updatingChange}
-                    onClick={(e) => {
+                    onClick={async (e) => {
                       e.preventDefault();
                       try {
-                        setUpdatingChange(true)
-                        deletePost(getData.postId);
-                      } catch (err) {
-                        console.error(err)
-                      } finally {
-                        setUpdatingChange(false)
+                        setUpdatingChange(true);
+                        await deletePost(getData.postId);
                         navigate("/home");
+                      } catch (err) {
+                        console.error(err);
+                      } finally {
+                        setUpdatingChange(false);
                       }
                     }}
                   >
-                    🗑 Delete
+                    🗑 Hapus Postingan
                   </button>
                 </li>
               </ul>
@@ -153,9 +152,11 @@ export const ViewDetail = () => {
           </div>
         </div>
 
-        <h4 className="fw-bold text-primary mb-3">{getData.postTitle}</h4>
-
-        <p className="text-secondary fs-5" style={{ whiteSpace: "pre-wrap" }}>
+        <h3 className="fw-bold text-primary mb-3">{getData.postTitle}</h3>
+        <p
+          className="text-secondary fs-5"
+          style={{ whiteSpace: "pre-wrap", lineHeight: "1.8" }}
+        >
           {getData.postText}
         </p>
       </div>

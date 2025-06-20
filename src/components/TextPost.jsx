@@ -6,6 +6,7 @@ import {
   doc,
   getDoc,
   serverTimestamp,
+  updateDoc,
 } from "firebase/firestore";
 
 import { useNavigate, Link } from "react-router-dom";
@@ -33,13 +34,17 @@ export const TextPost = () => {
       fullName = userDocSnap.data().fullName;
     }
 
-    await addDoc(collection(db, "Posts"), {
+    const postRef = await addDoc(collection(db, "Posts"), {
       userName: fullName,
       userId: user.uid,
       postText: textPost,
       postTitle: textPostTitle,
       createdAt: serverTimestamp(),
     });
+
+    await updateDoc(doc(db, "Posts", postRef.id), {
+      postId: postRef.id,
+    })
 
     alert("Post berhasil dikirim!");
     setTextPost("");

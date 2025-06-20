@@ -2,9 +2,9 @@ import { Link } from "react-router-dom";
 
 export const NavBar = () => {
   return (
-        <div className="sticky-top bg-white border-bottom shadow-sm z-3">
+    <div className="sticky-top bg-white border-bottom shadow-sm z-3">
       <div className="container py-2">
-        <ul className="nav justify-content-center gap-3">
+        <ul className="nav justify-content-center gap-4 flex-wrap">
           <li className="nav-item">
             <Link to="/home" className="nav-link text-dark fw-semibold">
               Home
