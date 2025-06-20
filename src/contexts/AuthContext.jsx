@@ -46,28 +46,6 @@ export const AuthContext = ({ children }) => {
     return () => unsubscribe();
   }, []);
 
-  function subscribe(auth, db, setLoading) {
-    const result = auth.onAuthStateChanged(async (user) => {
-      if (user) {
-        try {
-          const docRef = doc(db, "Users", user.uid);
-          const docSnap = await getDoc(docRef);
-          if (docSnap.exists()) {
-            setUserDetail(docSnap.data());
-          } else {
-            console.log("User document not found");
-          }
-        } catch (err) {
-          console.error(err);
-        }
-      } else {
-        setUserDetail(null);
-      }
-      setLoading(false);
-    });
-    return result;
-  }
-
   async function signUpEmail(db, fullName, auth, email, password) {
     if (
       email.trim() === "" ||
@@ -184,7 +162,6 @@ export const AuthContext = ({ children }) => {
     signInGoogle,
     userDetail,
     setUserDetail,
-    subscribe,
     loading,
     setLoading,
   };
