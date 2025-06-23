@@ -28,27 +28,6 @@ export const EditPost = () => {
       } finally {
         setLoading(false);
       }
-      <>
-        <label>Title</label>
-        <br />
-        <input
-          value={newTitle}
-          onChange={(e) => {
-            setNewTitle(e.target.value);
-          }}
-          type="text"
-        />
-
-        <label>Text</label>
-        <br />
-        <textarea
-          value={newText}
-          onChange={(e) => {
-            setNewText(e.target.value);
-          }}
-        />
-        <button onClick={updateHandler}>Update</button>
-      </>;
     };
     getData();
   }, []);
